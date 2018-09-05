@@ -1228,7 +1228,6 @@ void FaceRecognition::operator()() {
 
     cv::Mat frame = data.frame.clone();
     cv::Mat frame_copy = data.frame.clone();
-    trackerManager->countFrame = data.frameID;
     std::vector<dlib::rectangle> dlib_recs;
     dlib::cv_image<bgr_pixel> cv_temp(frame_copy);
     matrix<rgb_pixel> img;
@@ -1238,36 +1237,32 @@ void FaceRecognition::operator()() {
 
     //        cv::imshow("before", frame);
     double scaleMtcnn = 2;
-    if (data.frameID % 4 == 0) {
-      std::vector<BoundingBox> dets =
-          this->detectUsingCaffe(frame_copy, scaleMtcnn);
-      for (BoundingBox d : dets) {
+    if (data.frame_id % 4 == 0) {
+      std::vector<CaffeDetector::BoundingBox> dets =
+          this->classifier->detector->detectUsingCaffe(frame_copy, scaleMtcnn);
+      for (CaffeDetector::BoundingBox d : dets) {
         dlib::rectangle det(d.x1 * scaleMtcnn - 5, d.y1 * scaleMtcnn - 10,
                             d.x2 * scaleMtcnn + 5, d.y2 * scaleMtcnn + 10);
-        dlib_recs.push_back(det);
-        track_manager.insert_tracker(imgGray, det);
+        // dlib_recs.push_back(det);
+        trackerManager->insertTracker(imgGray, det);
       }
     } else {
-      track_manager.update_tracker(imgGray);
+      trackerManager->updateTracker(imgGray);
     }
-    int size = track_manager.get_tracker_list().size();
+    int size = trackerManager->getTrackerList().size();
 
     if (size > 0) {
       std::vector<dlib::matrix<float, 0, 1>> discriptors =
-          reg.get_128D(img, dlib_recs);
+          this->get_128D(img, dlib_recs);
       for (int i = 0; i < size; ++i) {
-        track_manager.get_tracker_list()[i]->vector128 = discriptors[i];
+        // trackerManager->getTrackerList()[i]->vector128 = discriptors[i];
 
-        cv::Rect rec = track_manager.get_tracker_list()[i]->get_cv_rec();
+        // cv::Rect rec = trackerManager->getTrackerList()[i]->;
 
-        cv::rectangle(frame, rec, cv::Scalar(0, 255, 0));
-        cv::putText(frame,
-                    track_manager.get_tracker_list()[i]->get_track_name(),
-                    cv::Point(rec.x, rec.y - 3), FONT_HERSHEY_COMPLEX_SMALL,
-                    0.8, cvScalar(200, 200, 250), 1, CV_AA);
+        // cv::rectangle(frame, rec, cv::Scalar(0, 255, 0));
       }
-      if (data.frameID % 80 == 0) {
-        track_manager.search_by_vector();
+      if (data.frame_id % 80 == 0) {
+        // track_manager.search_by_vector();
       }
     }
 

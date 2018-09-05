@@ -24,14 +24,6 @@ SOURCES += main.cpp \
     base64.cpp \
     Define.cpp \
     SocketIoUtils.cpp \
-#    vwscapture/src/Buffer.cpp \
-#    vwscapture/src/cvBufferCapture.cpp \
-#    vwscapture/src/decoder.cpp \
-#    vwscapture/src/libdownload.cpp \
-#    vwscapture/src/util.cpp \
-#    vwscapture/src/websocket.cpp \
-#    vwscapture/src/wscapture.cpp \
-#    vwscapture/src/wsconnection.cpp \
     StorageUtils.cpp \
     restclient-cpp/connection.cc \
     restclient-cpp/helpers.cc \
@@ -89,22 +81,11 @@ LIBS += -laws-cpp-sdk-core -laws-cpp-sdk-s3
 HEADERS += \
     Tracker.hpp \
     Utils.hpp \
-    Configuration.hpp \
     Define.hpp \
     FaceRecognition.hpp \
     CaffeDetector.hpp \
     base64.h \
     SocketIoUtils.hpp \
-#    vwscapture/include/vwscapture/Buffer.h \
-#    vwscapture/include/vwscapture/cvBufferCapture.h \
-#    vwscapture/include/vwscapture/decodebase.h \
-#    vwscapture/include/vwscapture/decoder.h \
-#    vwscapture/include/vwscapture/libdownload.h \
-#    vwscapture/include/vwscapture/opencvheaders.h \
-#    vwscapture/include/vwscapture/util.h \
-#    vwscapture/include/vwscapture/websocket.h \
-#    vwscapture/include/vwscapture/wsconnection.h \
-#    vwscapture/include/wscapture.h \
     Data.hpp \
     StorageUtils.hpp \
     restclient-cpp/connection.h \
